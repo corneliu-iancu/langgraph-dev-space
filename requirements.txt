@@ -1,0 +1,25 @@
+# Core dependencies
+requests>=2.32.4
+python-dotenv>=1.1.1
+mcp>=1.12.0
+faiss-cpu>=1.11.0
+
+# LangChain and AI dependencies - Updated to v0.3 recommended versions
+langchain>=0.3.26
+langchain-core>=0.3.69
+langchain-openai>=0.3.28
+langchain-mcp-adapters>=0.1.9
+langgraph>=0.5.3
+langgraph-cli[inmem]>=0.3.5
+
+# Development dependencies
+pytest>=8.4.1
+black>=25.1.0
+flake8>=7.3.0
+mypy>=1.17.0
+
+# Optional: Add more dependencies as needed
+# pandas>=2.0.0
+# numpy>=1.24.0
+# fastapi>=0.100.0
+# uvicorn>=0.23.0

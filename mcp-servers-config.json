@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "notion": {
+            "description": "Notion workspace operations for knowledge management, e.g., create, read, update pages, databases, blocks, and manage workspace content.",
+            "command": "node",
+            "args": ["C:/Users/corne/Projects/notion-mcp-server/bin/cli.mjs"],
+            "env": {
+                "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer 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\", \"Notion-Version\": \"2022-06-28\" }"
+            }
+        }
+    }
+}
