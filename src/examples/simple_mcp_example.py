@@ -3,9 +3,13 @@ import json
 import os
 from pathlib import Path
 from typing import Any
+from dotenv import load_dotenv
 from langgraph.graph import StateGraph, END
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 from langchain_core.prompts import ChatPromptTemplate
+
+# Load environment variables
+load_dotenv()
 
 from src.examples.simple_mcp_state import SimpleMCPState
 from src import mcp_wrapper as mcp
@@ -272,4 +276,7 @@ graph.add_conditional_edges(
 )
 
 # Tool execution always goes back to LLM for final response
-graph.add_edge("execute_tools", "llm_with_tools") 
+graph.add_edge("execute_tools", "llm_with_tools")
+
+# Compile the graph to make it executable
+graph = graph.compile() 
