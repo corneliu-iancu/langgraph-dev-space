@@ -187,3 +187,11 @@ logs/
 *.log 
 .langgraph_api
 .langgraph_api/*
+
+# LangGraph
+.langgraph_api/
+.langgraph_api/*
+
+# LangGraph
+.langgraph_api/
+.langgraph_api/*
