@@ -11,7 +11,7 @@
         "time": {
             "description": "Time operations for getting the current time.",
             "command": "python",
-            "args": ["C:/Users/corne/Projects/servers/src/time/src/mcp_server_time/__main__.py"]
+            "args": ["-m", "mcp_server_time"]
         }
     }
 }

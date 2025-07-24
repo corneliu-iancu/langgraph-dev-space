@@ -185,3 +185,4 @@ Desktop.ini
 # Logs
 logs/
 *.log 
+.langgraph_api
