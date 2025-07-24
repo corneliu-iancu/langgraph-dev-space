@@ -186,3 +186,4 @@ Desktop.ini
 logs/
 *.log 
 .langgraph_api
+.langgraph_api/*

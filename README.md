@@ -28,8 +28,15 @@ A LangGraph-based assistant that integrates with Model Context Protocol (MCP) se
    ```
 
 4. **Run the assistant**
+
    ```bash
    python main.py
+   ```
+
+   **Or with LangGraph CLI:**
+
+   ```bash
+   langgraph dev --allow-blocking
    ```
 
 ## Configuration

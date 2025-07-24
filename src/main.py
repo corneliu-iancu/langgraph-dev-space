@@ -12,7 +12,7 @@ from langchain_core.prompts import ChatPromptTemplate
 load_dotenv()
 
 from src.state.simple_mcp_state import SimpleMCPState
-from src import mcp_wrapper as mcp
+from src.proxy.mcp_proxy import apply, GetLangChainTools, RunTool
 from src.utils import load_chat_model
 
 
@@ -23,7 +23,7 @@ async def discover_mcp_servers(state: SimpleMCPState) -> SimpleMCPState:
     print("🔍 Discovering MCP servers...")
     
     try:
-        config_path = Path(__file__).parent / "mcp-servers-config.json"
+        config_path = Path(__file__).parent.parent / "mcp-servers-config.json"
         with open(config_path, 'r') as f:
             config_data = json.load(f)
         mcp_servers = config_data.get("mcpServers", {})
@@ -38,7 +38,7 @@ async def discover_mcp_servers(state: SimpleMCPState) -> SimpleMCPState:
         for server_name, server_config in mcp_servers.items():
             print(f"📝 Getting LangChain tools from server: {server_name}")
             
-            langchain_tools = await mcp.apply(server_name, server_config, mcp.GetLangChainTools())
+            langchain_tools = await apply(server_name, server_config, GetLangChainTools())
             all_langchain_tools.extend(langchain_tools)
             
             print(f"✅ Got {len(langchain_tools)} LangChain tools from {server_name}")
@@ -157,10 +157,10 @@ async def execute_mcp_tool(state: SimpleMCPState) -> SimpleMCPState:
             for server_name, server_config in mcp_servers.items():
                 try:
                     # Use mcp.apply pattern - spawns fresh process each time
-                    tool_output = await mcp.apply(
+                    tool_output = await apply(
                         server_name,
                         server_config, 
-                        mcp.RunTool(tool_name, **tool_args)
+                        RunTool(tool_name, **tool_args)
                     )
                     
                     print(f"✅ Tool {tool_name} executed successfully on server {server_name}")

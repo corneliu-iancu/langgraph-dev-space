@@ -1,7 +1,7 @@
 {
     "dependencies": ["."],
     "graphs": {
-      "main_graph": "./main.py:graph"
+      "main_graph": "./src/main.py:graph"
     },
     "env": ".env"
   }
