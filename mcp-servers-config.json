@@ -7,6 +7,11 @@
             "env": {
                 "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ${NOTION_SECRET}\", \"Notion-Version\": \"2022-06-28\" }"
             }
+        },
+        "time": {
+            "description": "Time operations for getting the current time.",
+            "command": "python",
+            "args": ["C:/Users/corne/Projects/servers/src/time/src/mcp_server_time/__main__.py"]
         }
     }
 }

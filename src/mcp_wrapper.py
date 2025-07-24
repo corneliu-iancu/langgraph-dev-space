@@ -5,9 +5,6 @@ from datetime import datetime
 from typing import Any
 from mcp import (
     ClientSession,
-    ListPromptsResult,
-    ListResourcesResult,
-    ListToolsResult,
     StdioServerParameters,
     stdio_client,
 )
@@ -20,68 +17,6 @@ class MCPSessionFunction(ABC):
     @abstractmethod
     async def __call__(self, server_name: str, session: ClientSession) -> Any:
         pass
-
-
-class RoutingDescription(MCPSessionFunction):
-    async def __call__(self, server_name: str, session: ClientSession) -> str:
-        tools: ListToolsResult | None = None
-        prompts: ListPromptsResult | None = None
-        resources: ListResourcesResult | None = None
-        content = ""
-        try:
-            tools = await session.list_tools()
-            if tools:
-                content += "Provides tools:\n"
-                for tool in tools.tools:
-                    content += f"- {tool.name}: {tool.description}\n"
-                content += "---\n"
-        except Exception as e:
-            print(f"Failed to fetch tools from server '{server_name}': {e}")
-
-        try:
-            prompts = await session.list_prompts()
-            if prompts:
-                content += "Provides prompts:\n"
-                for prompt in prompts.prompts:
-                    content += f"- {prompt.name}: {prompt.description}\n"
-                content += "---\n"
-        except Exception as e:
-            print(f"Failed to fetch prompts from server '{server_name}': {e}")
-
-        try:
-            resources = await session.list_resources()
-            if resources:
-                content += "Provides resources:\n"
-                for resource in resources.resources:
-                    content += f"- {resource.name}: {resource.description}\n"
-                content += "---\n"
-        except Exception as e:
-            print(f"Failed to fetch resources from server '{server_name}': {e}")
-
-        return server_name, content
-
-
-class GetTools(MCPSessionFunction):
-    async def __call__(
-        self, server_name: str, session: ClientSession
-    ) -> list[dict[str, Any]]:
-        tools = await session.list_tools()
-        if tools is None:
-            return []
-        
-        tool_list = []
-        for tool in tools.tools:
-            tool_dict = {
-                "type": "function",
-                "function": {
-                    "name": tool.name,
-                    "description": tool.description or "",
-                    "parameters": tool.inputSchema or {},
-                },
-            }
-            tool_list.append(tool_dict)
-        
-        return tool_list
 
 
 class GetLangChainTools(MCPSessionFunction):
@@ -110,14 +45,34 @@ class RunTool(MCPSessionFunction):
         return content
 
 
+def interpolate_env_vars(value: str, env_vars: dict) -> str:
+    """Interpolate environment variables in format ${VAR_NAME}"""
+    import re
+    
+    def replace_var(match):
+        var_name = match.group(1)
+        return env_vars.get(var_name, match.group(0))  # Return original if not found
+    
+    return re.sub(r'\$\{([^}]+)\}', replace_var, value)
+
+
 async def apply(server_name: str, server_config: dict, fn: MCPSessionFunction) -> Any:
     # Non-blocking environment access
     env_vars = await asyncio.to_thread(lambda: dict(os.environ))
+    
+    # Interpolate environment variables in server config
+    server_env = server_config.get("env") or {}
+    interpolated_env = {}
+    for key, value in server_env.items():
+        if isinstance(value, str):
+            interpolated_env[key] = interpolate_env_vars(value, env_vars)
+        else:
+            interpolated_env[key] = value
 
     server_params = StdioServerParameters(
         command=server_config["command"],
         args=server_config["args"],
-        env={**env_vars, **(server_config.get("env") or {})},
+        env={**env_vars, **interpolated_env},
     )
 
     print(f"📝 [{datetime.now().isoformat()}] Starting session with (server: {server_name})")

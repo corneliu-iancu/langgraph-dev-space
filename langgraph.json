@@ -1,9 +1,7 @@
 {
     "dependencies": ["."],
     "graphs": {
-      "assistent_graph": "./src/assistent_graph.py:graph",
-      "build_router_graph": "./src/build_router_graph.py:graph",
-      "simple_mcp_example": "./src/examples/simple_mcp_example.py:graph"
+      "main_graph": "./main.py:graph"
     },
     "env": ".env"
   }
