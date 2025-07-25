@@ -136,7 +136,7 @@ async def llm_with_mcp_tools(state: SimpleMCPState) -> SimpleMCPState:
             status = "calling_tool"
         else:
             logger.info("💬 LLM generated text response")
-            logger.debug(f"Response preview: {str(response.content)[:100]}...")
+            logger.info(f"🆕 Response preview: {str(response.content)[:100]}...")
             status = "ready"
         
         updated_messages = messages + [response]
@@ -158,7 +158,8 @@ async def execute_single_tool(tool_call: dict, mcp_servers: dict) -> ToolMessage
     tool_args = tool_call["args"]
     tool_call_id = tool_call["id"]
     
-    logger.debug(f"Executing tool: {tool_name} with args: {tool_args}")
+    # logger.debug(f"Executing tool: {tool_name} with args: {tool_args}")
+    logger.debug(f"Executing tool: {tool_name}.")
     
     last_error = None
     for server_name, server_config in mcp_servers.items():

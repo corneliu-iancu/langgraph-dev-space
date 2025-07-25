@@ -1,17 +1,34 @@
 {
     "mcpServers": {
-        "notion": {
+        "Notion": {
             "description": "Notion workspace operations for knowledge management, e.g., create, read, update pages, databases, blocks, and manage workspace content.",
             "command": "node",
-            "args": ["C:/Users/corne/Projects/notion-mcp-server/bin/cli.mjs"],
+            "args": [
+                "/Users/ciancu/Projects/notion-mcp-server/bin/cli.mjs"
+            ],
             "env": {
-                "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ${NOTION_SECRET}\", \"Notion-Version\": \"2022-06-28\" }"
+                "OPENAPI_MCP_HEADERS": "{\"Authorization\":\"Bearer ${NOTION_SECRET}\",\"Notion-Version\":\"2022-06-28\"}"
             }
         },
-        "time": {
+        "Time": {
             "description": "Time operations for getting the current time.",
             "command": "python",
             "args": ["-m", "mcp_server_time"]
+        },
+        "Wiki": {
+            "description": "Wiki operations for managing knowledge bases and content.",
+            "url": "http://localhost:1984/sse"
+        },
+        "Jira": {
+            "description": "Jira operations for managing projects and issues.",
+            "command": "node",
+            "args": [
+                "/Users/ciancu/Projects/python-workspace/langgraph-dev-space/mcp-packages/corp-jira/dist/index.js"
+            ],
+            "env": {
+                "JIRA_EMAIL": "${JIRA_EMAIL}",
+                "JIRA_PERSONAL_ACCESS_TOKEN": "${JIRA_PERSONAL_ACCESS_TOKEN}"
+            }
         }
     }
 }

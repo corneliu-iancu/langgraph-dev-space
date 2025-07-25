@@ -179,7 +179,7 @@ async def execute_mcp_tool(state: SimpleMCPState) -> SimpleMCPState:
             tool_args = tool_call["args"]
             tool_call_id = tool_call["id"]
             
-            print(f"🔧 Executing tool: {tool_name} with args: {tool_args}")
+            print(f"🔧 Executing tool: {tool_name}.")
             
             # Find which server handles this tool and execute with fresh session
             tool_executed = False

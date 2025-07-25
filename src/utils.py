@@ -185,7 +185,8 @@ def log_tool_execution(tool_name: str, server_name: str, args: dict, status: str
     elif status == "success":
         logger.info(f"✅ [{timestamp}] TOOL_EXEC_SUCCESS: {tool_name} on {server_name}")
         if details:
-            logger.debug(f"    Result preview: {details[:100]}...")
+            # This provides really useful information for the LLM to understand the result of the tool execution.
+            logger.info(f"🆕 Result preview: {details[:100]}...")
     elif status == "failed":
         logger.error(f"❌ [{timestamp}] TOOL_EXEC_FAILED: {tool_name} on {server_name}")
         logger.error(f"    Error details: {details}")
