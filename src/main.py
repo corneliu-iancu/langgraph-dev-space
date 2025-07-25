@@ -136,7 +136,7 @@ async def llm_with_mcp_tools(state: SimpleMCPState) -> SimpleMCPState:
             status = "calling_tool"
         else:
             logger.info("💬 LLM generated text response")
-            logger.info(f"🆕 Response preview: {str(response.content)[:100]}...")
+            logger.info(f"🆕 Response preview: {str(response.content)}...")
             status = "ready"
         
         updated_messages = messages + [response]
@@ -221,12 +221,8 @@ async def execute_mcp_tool(state: SimpleMCPState) -> SimpleMCPState:
         
         # Process all tool calls
         tool_messages = await process_tool_calls(last_message.tool_calls, mcp_servers)
-        
-        # Log summary
-        successful = sum(1 for msg in tool_messages if not msg.content.startswith("Error:"))
-        failed = len(tool_messages) - successful
-        logger.info(f"✅ Tool execution completed: {successful} successful, {failed} failed")
-        
+        logger.info(f"🔧 Tool execution completed: {len(tool_messages)} tool calls processed")
+
         return {
             **state,
             "messages": messages + tool_messages,
