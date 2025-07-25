@@ -195,3 +195,7 @@ logs/
 # LangGraph
 .langgraph_api/
 .langgraph_api/*
+
+mcp-packages/**/node_modules/
+mcp-packages/**/dist
+mcp-packages/**/.env
